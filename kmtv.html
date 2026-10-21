@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KMTV</title>
+<meta name="description" content="KMTV : votre guide des matchs de football, films et séries, avec accès aux services officiels.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📺%3C/text%3E%3C/svg%3E">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff;--surface:#f4f4f4;--text:#0a0a0a;--muted:#666;--accent:#e50914;--border:#dcdcdc;--free:#0a0a0a;--freefg:#fff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--surface:#121212;--text:#fff;--muted:#a3a3a3;--border:#2a2a2a;--free:#fff;--freefg:#000}}
+:root[data-theme="dark"]{--bg:#000;--surface:#121212;--text:#fff;--muted:#a3a3a3;--border:#2a2a2a;--free:#fff;--freefg:#000}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.app{display:flex;gap:16px;padding:16px;max-width:1300px;margin:auto;align-items:flex-start}
+aside{width:230px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px 12px;position:sticky;top:16px;min-height:calc(100vh - 32px);display:flex;flex-direction:column}
+.logo{font-weight:900;font-size:26px;padding:4px 12px 14px;letter-spacing:1px}.logo span{color:var(--accent)}
+.lab{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--muted);padding:10px 14px 6px}
+aside button{display:flex;align-items:center;gap:12px;width:100%;background:none;border:1px solid transparent;color:var(--muted);font:600 15px inherit;padding:11px 14px;border-radius:12px;cursor:pointer;margin-bottom:4px;text-align:left}
+aside button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.sp{flex:1}
+main{flex:1;min-width:0}
+.top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.top input,.top select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:12px;font-size:14px}
+.top input{flex:1;min-width:160px}
+h1{font-size:26px;margin:0 0 4px;border-left:4px solid var(--accent);padding-left:10px}.note{color:var(--muted);font-size:12px;margin:0 0 16px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--border)}
+.info{flex:1;min-width:0}
+.ch{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sub{color:var(--muted);font-size:13px;margin-top:3px}.sub b{color:var(--text)}
+.bar{height:4px;background:var(--border);border-radius:4px;margin-top:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}
+.st{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+.free{background:var(--free);color:var(--freefg);font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px}
+.live{background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px}
+.go{background:var(--accent);color:#fff;text-decoration:none;padding:9px 14px;border-radius:20px;font-size:13px;font-weight:700;white-space:nowrap;display:inline-block}
+.go.f{background:var(--free);color:var(--freefg)}
+.heart{background:none;border:0;font-size:22px;cursor:pointer;color:var(--muted)}.heart.on{color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:8px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.poster{aspect-ratio:2/3;display:flex;align-items:flex-end;padding:10px;color:#fff;font-weight:800;position:relative}
+.poster .free{position:absolute;top:8px;left:8px}
+.meta{padding:9px 11px;font-size:12px;color:var(--muted)}.meta b{display:block;color:var(--text);font-size:14px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.tile.on{border-color:var(--accent)}.tile b{font-size:17px}.tile span{color:var(--muted);font-size:13px}.tile label{font-size:13px;cursor:pointer}.tile .go{text-align:center}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+#modal.open{display:flex}
+.box{width:min(900px,100%);background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text)}
+.box video{width:100%;background:#000;border-radius:10px;aspect-ratio:16/9}
+.empty{aspect-ratio:16/9;background:#000;border-radius:10px;display:flex;align-items:center;justify-content:center;text-align:center;color:#bbb;padding:20px;font-size:14px}
+.pr{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.pr input{flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:8px}
+.pr button{background:var(--accent);color:#fff;border:0;padding:9px 16px;border-radius:8px;font-weight:700;cursor:pointer}
+@media(max-width:760px){.app{flex-direction:column}aside{width:100%;min-height:0;position:static;flex-direction:row;flex-wrap:wrap;padding:10px}.logo{padding:6px 10px}aside button{width:auto;margin:0}.sp,.lab{display:none}.row{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="logo">KM<span>TV</span></div>
+  <div class="lab">FOOTBALL</div>
+  <button data-k="matchs">⚽ Matchs</button>
+  <button data-k="favs">♥ Favoris</button>
+  <div class="lab">FILMS & SÉRIES</div>
+  <button data-k="films">🎬 Films</button>
+  <button data-k="series">📺 Séries</button>
+  <div class="lab">COMPTE</div>
+  <button data-k="abos">🔑 Mes abonnements</button>
+  <button data-k="legal">ℹ️ Mentions légales</button>
+  <div class="sp"></div>
+  <button id="theme">🌓 Thème</button>
+</aside>
+<main>
+  <div class="top">
+    <input id="q" type="search" placeholder="Rechercher…">
+    <select id="comp"></select>
+    <select id="fr"><option value="">Tous les matchs</option><option value="1">Gratuit seulement</option></select>
+  </div>
+  <div id="content"></div>
+</main>
+</div>
+
+<div id="modal"><div class="box">
+  <div id="stage"></div>
+  <h3 id="ptitle" style="margin:12px 0 0"></h3>
+  <div class="pr"><a id="off" class="go" target="_blank" rel="noopener"></a><span class="note" id="offn" style="margin:0"></span></div>
+  <div class="pr"><input id="url" placeholder="Votre propre flux (.m3u8 ou .mp4) dont vous avez les droits"><button onclick="playUrl()">Lire</button><button onclick="closeP()" style="background:var(--muted)">Fermer</button></div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.7/hls.min.js"></script>
+<script>
+// KMTV redirige vers les services officiels. Aucun flux sans licence.
+const DIFF={canal:["Canal+","https://www.canalplus.com"],l1:["Ligue 1+","https://www.ligue1.fr"],bein:["beIN Sports","https://www.beinsports.com/fr-fr/"],disney:["Disney+","https://www.disneyplus.com"],ftv:["France.tv","https://www.france.tv"],yt:["YouTube (DAZN)","https://www.youtube.com"],dazn:["DAZN","https://www.dazn.com"],netflix:["Netflix","https://www.netflix.com"],prime:["Prime Video","https://www.primevideo.com"],arte:["Arte","https://www.arte.tv"]};
+const FREEB=["ftv","arte","yt"];
+const MATCHS=[
+ {id:"m1",comp:"Ligue des Champions",t:"Bayern Munich / Arsenal",start:"2026-10-21T21:00",dur:120,b:"canal"},
+ {id:"m2",comp:"Ligue des Champions",t:"Paris Saint-Germain / Bayer Leverkusen",start:"2026-10-21T21:00",dur:120,b:"canal"},
+ {id:"m3",comp:"Ligue 1",t:"Match de Ligue 1 (à compléter)",b:"l1"},
+ {id:"m4",comp:"Coupe de France",t:"Un match par tour en clair (à compléter)",b:"ftv",free:1},
+ {id:"m5",comp:"Ligue des Champions féminine",t:"Match gratuit sur YouTube (à compléter)",b:"yt",free:1},
+ {id:"m6",comp:"Ligue 2",t:"Match de Ligue 2 (à compléter)",b:"bein"},
+ {id:"m7",comp:"Premier League (Angleterre)",t:"Match de Premier League (à compléter)",b:"canal"},
+ {id:"m8",comp:"Serie A (Italie)",t:"Match de Serie A (à compléter)",b:"dazn"},
+ {id:"m9",comp:"Liga (Espagne)",t:"Match de Liga (à compléter)",b:"dazn"},
+ {id:"m10",comp:"Bundesliga (Allemagne)",t:"Match de Bundesliga (à compléter)",b:"bein"},
+ {id:"m11",comp:"Ligue Europa",t:"Match de Ligue Europa (à compléter)",b:"canal"},
+ {id:"m12",comp:"Ligue Conférence",t:"Match de Ligue Conférence (à compléter)",b:"canal"},
+ {id:"m13",comp:"FA Cup / League Cup (Angleterre)",t:"Match de coupe anglaise (à compléter)",b:"bein"}
+];
+// Films et séries : complétez avec vos titres et le service où ils sont disponibles ; "src" = votre propre flux sous licence.
+const FILMS=[
+ {t:"Film d’action",g:"Action",info:"Film",b:"netflix"},{t:"Comédie du soir",g:"Comédie",info:"Film",b:"prime"},
+ {t:"Drame intime",g:"Drame",info:"Film",b:"canal"},{t:"Voyage stellaire",g:"Science-fiction",info:"Film",b:"disney"},
+ {t:"Nuit blanche",g:"Thriller",info:"Film",b:"netflix"},{t:"Le petit renard",g:"Animation",info:"Film",b:"disney"},
+ {t:"Classique du cinéma",g:"Drame",info:"Film",b:"arte"},{t:"Film en clair",g:"Comédie",info:"Film",b:"ftv"}
+];
+const SERIES=[
+ {t:"Série policière",g:"Thriller",info:"3 saisons",b:"netflix"},{t:"Série fantastique",g:"Science-fiction",info:"2 saisons",b:"disney"},
+ {t:"Série comédie",g:"Comédie",info:"5 saisons",b:"prime"},{t:"Série dramatique",g:"Drame",info:"4 saisons",b:"canal"},
+ {t:"Série d’action",g:"Action",info:"2 saisons",b:"prime"},{t:"Série animée",g:"Animation",info:"6 saisons",b:"netflix"},
+ {t:"Série documentaire",g:"Documentaire",info:"1 saison",b:"arte"},{t:"Série en clair",g:"Drame",info:"2 saisons",b:"ftv"}
+];
+const SERV=[{id:"netflix",n:"Netflix",d:"Films et séries"},{id:"canal",n:"Canal+",d:"Ligue des Champions, Premier League"},{id:"l1",n:"Ligue 1+",d:"Ligue 1"},{id:"disney",n:"Disney+",d:"LDC féminine, séries"},{id:"bein",n:"beIN Sports",d:"Bundesliga, Coupe de France"},{id:"prime",n:"Prime Video",d:"Films et séries"},{id:"dazn",n:"DAZN",d:"Liga, Serie A"},{id:"ftv",n:"France.tv",d:"Gratuit"},{id:"arte",n:"Arte",d:"Gratuit"}];
+const G=["#e50914,#2a0003","#9b0610,#000","#3a3a3a,#000","#c4000e,#1a0002","#666,#0a0a0a","#ff2a36,#4a0006"];
+const FOOT=["matchs","favs"];
+let view="matchs",favs=new Set(),abos=new Set(),hls=null,dark=matchMedia("(prefers-color-scheme: dark)").matches;
+try{favs=new Set(JSON.parse(localStorage.getItem("kmtv_favs")||"[]"));abos=new Set(JSON.parse(localStorage.getItem("kmtv_abos")||"[]"))}catch(e){}
+const $=id=>document.getElementById(id),content=$("content");
+const save=(k,s)=>{try{localStorage.setItem(k,JSON.stringify([...s]))}catch(e){}};
+document.querySelectorAll("aside button[data-k]").forEach(b=>b.onclick=()=>{view=b.dataset.k;$("comp").value="";render()});
+["q","comp","fr"].forEach(i=>$(i).oninput=render);
+$("theme").onclick=()=>{dark=!dark;document.documentElement.dataset.theme=dark?"dark":"light"};
+const hm=d=>d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+function status(m){
+ if(!m.start)return {txt:"Horaire à venir",pct:0};
+ const s=new Date(m.start),e=new Date(+s+m.dur*6e4),n=new Date(),range=hm(s)+" – "+hm(e);
+ if(n<s)return {txt:s.toDateString()===n.toDateString()?"Commence à "+hm(s):"Le "+s.toLocaleDateString("fr-FR"),pct:0,range};
+ if(n>e)return {txt:"Terminé",pct:100,range};
+ const l=Math.ceil((e-n)/6e4);
+ return {txt:"reste "+(l>=60?Math.floor(l/60)+" h "+l%60+" min":l+" min"),pct:(n-s)/(e-s)*100,live:1,range};
+}
+function fav(id){favs.has(id)?favs.delete(id):favs.add(id);save("kmtv_favs",favs);render()}
+function toggleAbo(id){abos.has(id)?abos.delete(id):abos.add(id);save("kmtv_abos",abos);render()}
+function row(m){
+ const s=status(m),d=DIFF[m.b];
+ return `<div class="row"><div class="info"><div class="ch">${m.comp}${s.live?'<span class="live">● DIRECT</span>':""}${m.free?'<span class="free">GRATUIT</span>':""}</div>
+ <div class="sub">${s.range?s.range+" · ":""}<b>${m.t}</b></div>${m.start?`<div class="bar"><i style="width:${s.pct}%"></i></div>`:""}</div>
+ <div class="st">${s.txt}</div>
+ <a class="go ${m.free?"f":""}" href="${d[1]}" target="_blank" rel="noopener">${m.free?"Regarder gratuitement":"Regarder sur "+d[0]}</a>
+ <button class="heart ${favs.has(m.id)?"on":""}" onclick="fav('${m.id}')" aria-label="Favori">♥</button></div>`;
+}
+function opts(list,label){const cur=$("comp").value;$("comp").innerHTML=`<option value="">${label}</option>`+list.map(c=>`<option${c===cur?" selected":""}>${c}</option>`).join("")}
+function catalog(list,kind,name){
+ const q=$("q").value.toLowerCase(),g=$("comp").value;
+ const it=list.map((x,i)=>({x,i})).filter(o=>(o.x.t+o.x.g).toLowerCase().includes(q)&&(!g||o.x.g===g));
+ return `<h1>${name}</h1><p class="note">Chaque titre s’ouvre sur le service officiel où il est disponible. Complétez la liste avec vos titres.</p><div class="grid">${it.map(o=>{const x=o.x,c=G[o.i%6].split(",");return `<div class="card" onclick="openP('${kind}',${o.i})"><div class="poster" style="background:linear-gradient(160deg,${c[0]},${c[1]})">${FREEB.includes(x.b)?'<span class="free">GRATUIT</span>':""}${x.t}</div><div class="meta"><b>${x.t}</b>${x.g} · ${DIFF[x.b][0]}</div></div>`}).join("")||"<p>Aucun résultat.</p>"}</div>`;
+}
+function render(){
+ document.querySelectorAll("aside button[data-k]").forEach(b=>b.classList.toggle("on",b.dataset.k===view));
+ const foot=FOOT.includes(view),cat=view==="films"||view==="series";
+ $("comp").style.display=foot||cat?"":"none";$("fr").style.display=foot?"":"none";
+ if(foot)opts([...new Set(MATCHS.map(m=>m.comp))],"Compétition : toutes");
+ if(cat)opts([...new Set([...FILMS,...SERIES].map(x=>x.g))],"Genre : tous");
+ if(view==="abos"){const s=[...SERV].sort((a,b)=>abos.has(b.id)-abos.has(a.id));content.innerHTML=`<h1>Mes abonnements</h1><p class="note">Cochez vos abonnements. Chaque contenu se regarde sur le service officiel : KMTV ne diffuse rien lui-même.</p><div class="tiles">${s.map(x=>`<div class="tile ${abos.has(x.id)?"on":""}"><b>${x.n}</b><span>${x.d}</span><label><input type="checkbox" ${abos.has(x.id)?"checked":""} onchange="toggleAbo('${x.id}')"> Je suis abonné(e)</label><a class="go" href="${DIFF[x.id][1]}" target="_blank" rel="noopener">Ouvrir</a></div>`).join("")}</div>`;return}
+ if(view==="legal"){content.innerHTML=`<h1>Mentions légales</h1><p class="note">Modèle à compléter (remplacez les textes entre crochets). Faites-le vérifier par un professionnel si le site devient plus qu’un projet personnel.</p>
+ <div class="tile" style="gap:14px;line-height:1.6;font-size:14px">
+ <div><b>Éditeur du site</b><br>[Votre nom ou raison sociale], [adresse], [e-mail de contact]</div>
+ <div><b>Directeur de la publication</b><br>[Votre nom]</div>
+ <div><b>Hébergeur</b><br>[Nom de l’hébergeur : Netlify, GitHub Pages, Cloudflare…], [adresse de l’hébergeur]</div>
+ <div><b>Nature du site</b><br>KMTV est un guide qui renvoie vers des services officiels (Canal+, Ligue 1+, Netflix, Disney+, etc.). KMTV ne diffuse, n’héberge et ne stocke aucun film, série ni match.</div>
+ <div><b>Propriété et marques</b><br>Les noms, logos et contenus des services cités appartiennent à leurs propriétaires respectifs. Leur mention n’implique aucun partenariat.</div>
+ <div><b>Données personnelles</b><br>KMTV n’utilise pas de cookies de suivi. Vos favoris et abonnements sont enregistrés uniquement dans votre navigateur et ne sont pas envoyés à un serveur. Pour toute question : [e-mail de contact].</div>
+ <div><b>Liens externes</b><br>KMTV n’est pas responsable du contenu des sites vers lesquels il renvoie. Un abonnement peut être nécessaire pour y accéder.</div>
+ </div>`;return}
+ if(view==="films"){content.innerHTML=catalog(FILMS,"f","Films");return}
+ if(view==="series"){content.innerHTML=catalog(SERIES,"s","Séries");return}
+ const q=$("q").value.toLowerCase(),c=$("comp").value,f=$("fr").value;
+ const mm=MATCHS.filter(m=>(m.t+m.comp).toLowerCase().includes(q)&&(!c||m.comp===c)&&(!f||m.free)&&(view!=="favs"||favs.has(m.id)));
+ content.innerHTML=`<h1>${view==="favs"?"Favoris":"Matchs à venir"}</h1><p class="note">KMTV vous redirige vers le diffuseur officiel (abonnement nécessaire, sauf badge Gratuit). Droits TV à vérifier selon les saisons.</p>`+(mm.map(row).join("")||"<p>Aucun match.</p>");
+}
+function stop(){if(hls){hls.destroy();hls=null}$("stage").innerHTML=""}
+function openP(kind,i){
+ const c=(kind==="f"?FILMS:SERIES)[i],d=DIFF[c.b];
+ $("ptitle").textContent=c.t+" · "+c.info;$("url").value=c.src||"";
+ $("off").textContent=(FREEB.includes(c.b)?"Regarder gratuitement sur ":"Regarder sur ")+d[0];$("off").href=d[1];$("off").className="go"+(FREEB.includes(c.b)?" f":"");
+ $("offn").textContent=abos.has(c.b)?"✓ Vous avez coché cet abonnement":"";
+ $("modal").classList.add("open");
+ c.src?load(c.src):(stop(),$("stage").innerHTML='<div class="empty">Ce titre se regarde sur le service officiel.<br>Vous pouvez aussi coller ci-dessous votre propre flux sous licence.</div>');
+}
+function load(src){
+ stop();const v=document.createElement("video");v.controls=true;v.autoplay=true;v.playsInline=true;$("stage").appendChild(v);
+ if(/\.m3u8/i.test(src)&&window.Hls&&Hls.isSupported()){hls=new Hls();hls.loadSource(src);hls.attachMedia(v)}else v.src=src;
+}
+function playUrl(){const u=$("url").value.trim();if(u)load(u)}
+function closeP(){stop();$("modal").classList.remove("open")}
+$("modal").onclick=e=>{if(e.target.id==="modal")closeP()};
+render();setInterval(()=>{if(FOOT.includes(view)&&!$("modal").classList.contains("open"))render()},60000);
+</script>
+</body>
+</html>
